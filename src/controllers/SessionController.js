@@ -19,7 +19,7 @@ module.exports= {
             return res.status(400).json({status: "Usuario ja cadastrado"});
         }
         else if(!senhaForte.test(senha))
-        {
+        {  
 
             return res.status(400).json({erro:"senha deve conter Letra Maiuscula numero e caracter especial"})
         }
