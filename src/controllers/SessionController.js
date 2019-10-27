@@ -1,13 +1,14 @@
 //Index, Show, Sotore, Update, Destroy
-const User = require('../models/User')
+const User = require('../models/User');
+const md5 =  require('md5');
 
 module.exports= {
     async store(req,res){
         const {email}  = req.body;
-        const {senha} =  req.body;
+        let {senha} =  req.body;
         
-        let user = await User.findOne({email});
-        
+        let user = await User.findOne({email});       
+        let senhamd5 = md5(senha)
         //senha Forte Letras Maiusca, Minuscula, Numeros, e caracter especial
         //No minimo 8 Digitos
         let senhaForte = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
@@ -23,7 +24,9 @@ module.exports= {
 
             return res.status(400).json({erro:"senha deve conter Letra Maiuscula numero e caracter especial"})
         }
+    
         else if (!user ){
+            senha = senhamd5
             user = await User.create({
                 email,
                 senha
